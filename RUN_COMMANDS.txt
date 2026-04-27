@@ -1,0 +1,50 @@
+======================================================
+  QUICK RUN CHEAT SHEET - UFACTORY xArm 7
+======================================================
+
+Whenever you open this folder, use these exact commands.
+
+------------------------------------------------------
+🤖 OPTION A: RUNNING THE PHYSICAL ROBOT
+------------------------------------------------------
+STEP 1: Hardware & Network Check
+- Battery plugged into green block (V+ and GND)
+- Ethernet cable connected (Laptop <--> Controller Box)
+- Release E-Stop (Red button popped up)
+- Your laptop IP must be set to 192.168.1.100
+
+STEP 2: Enable Robot (UFACTORY Studio)
+- Open browser and go to: http://192.168.1.230:18333
+- Click "Enable Robot"
+
+STEP 3: Launch ROS 2 MoveIt
+- Open terminal and run:
+  cd ~/xarm7_moveit_repo
+  ./launch_real_robot.sh
+
+STEP 4: Move the Robot (In RViz)
+- MotionPlanning panel -> "Planning" tab
+- Set Velocity & Acceleration Scaling to 0.1 (10% speed)
+- Drag the ball marker
+- Click "Plan" -> verify visually -> Click "Execute"
+
+------------------------------------------------------
+🎮 OPTION B: RUNNING THE GAZEBO SIMULATION
+------------------------------------------------------
+If you just want to test code without the real robot:
+
+STEP 1: Launch Simulation
+- Open terminal and run:
+  cd ~/xarm7_moveit_repo
+  ./launch_simulation.sh
+
+STEP 2: Move the Virtual Robot (In RViz)
+- MotionPlanning panel -> "Planning" tab
+- Drag the ball marker
+- Click "Plan" -> Click "Execute" (Gazebo robot will move)
+
+------------------------------------------------------
+🚨 EMERGENCY STOP
+------------------------------------------------------
+- Physical: Smash the red E-Stop button on the base!
+- Software: Press Ctrl+C in your terminal.
