@@ -95,3 +95,18 @@ To connect and control the real hardware controllers:
    - Select `hitbot_arm` to control the HITBOT Z-Arm S922 (DoF: 6).
 3. Drag the interactive marker ball at the tool tip to set the target pose.
 4. Click **Plan** to visualize, then **Execute** to move.
+
+---
+
+## 🛠️ Troubleshooting (RViz Crashes / OpenGL Errors)
+
+If RViz2 crashes or segmentation faults (`exit code -11` / `SIGSEGV`) on startup, it is usually due to OpenGL driver conflicts with the rendering engine (especially common on integrated graphics like Intel HD 4000 series or NVIDIA/AMD hybrid setups).
+
+To prevent these graphics crashes, all launch scripts automatically override Mesa and enforce software rendering:
+```bash
+export LIBGL_ALWAYS_SOFTWARE=1
+export MESA_GL_VERSION_OVERRIDE=3.3
+```
+
+If you encounter issues running the scripts, make sure to execute them directly in your **desktop user terminal** (instead of a remote SSH or headless session), as RViz requires a valid desktop display context (`$DISPLAY`).
+
