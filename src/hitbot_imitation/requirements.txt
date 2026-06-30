@@ -1,0 +1,27 @@
+# Python dependencies for hitbot_imitation.
+#
+# Stage B (retargeting) and Stage C (execution) need only numpy + scipy, which
+# ROS already provides.  The heavy Stage A (perception) dependencies below are
+# installed separately ON THE GPU MACHINE — they are NOT required to build the
+# package or to run retargeting/Gazebo execution with the synthetic demo.
+
+# --- Stage B/C core (usually already present via ROS) ---------------------
+numpy>=1.24
+scipy>=1.10
+
+# --- Stage A: reconstruction (GPU machine only) ---------------------------
+# Pin to the versions/commits you actually install; several are bleeding-edge
+# and distributed from GitHub rather than PyPI.  See README "Stage A".
+opencv-python>=4.8          # video I/O + masks
+torch>=2.2                  # backbone for all the models below (CUDA build)
+torchvision>=0.17
+# Hand tracking ........... HaWoR        https://github.com/ThunderVVV/HaWoR
+# Segmentation ............ SAM 3        https://github.com/facebookresearch/sam3
+# Metric depth ............ MoGe / MoGe-2 https://github.com/microsoft/MoGe
+# Object meshing+flow ..... SAM 3D       https://github.com/facebookresearch/sam-3d
+# Point tracks (optional) . BootsTAPIR   https://github.com/google-deepmind/tapnet
+# Gravity (optional) ...... GeoCalib     https://github.com/cvg/GeoCalib
+#
+# Install each per its own instructions (they bring their own deps), then wire
+# the adapters in hitbot_imitation/reconstruction/adapters.py and the
+# FlowVelocityModel + build_pipeline() in hitbot_imitation/app_reconstruct.py.

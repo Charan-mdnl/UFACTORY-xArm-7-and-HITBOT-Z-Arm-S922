@@ -1,40 +1,47 @@
 #!/bin/bash
+# ═══════════════════════════════════════════════════════════════════
+# setup.sh — Build the dual-arm workspace
+#
+# Usage:
+#   ./setup.sh          ← full build
+#   ./setup.sh clean    ← clean + rebuild
+# ═══════════════════════════════════════════════════════════════════
+
 set -e
 
-echo "================================================="
-echo " Setting up UFACTORY xArm 7 ROS 2 Workspace"
-echo "================================================="
+echo "═══════════════════════════════════════════════════"
+echo " Building Dual-Arm Workspace"
+echo " xArm 7 + HITBOT Z-Arm S922"
+echo "═══════════════════════════════════════════════════"
 
-# The workspace is the current directory
-WORKSPACE_DIR="$(pwd)"
+# Remove Anaconda/Miniforge from paths
+export LD_LIBRARY_PATH=$(echo "$LD_LIBRARY_PATH" | tr ':' '\n' | grep -v "miniforge\|anaconda\|conda\|miniconda" | tr '\n' ':' | sed 's/:$//')
+export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v "miniforge\|anaconda\|conda\|miniconda" | tr '\n' ':' | sed 's/:$//')
+export PYTHONPATH=$(echo "$PYTHONPATH" | tr ':' '\n' | grep -v "miniforge\|anaconda\|conda\|miniconda" | tr '\n' ':' | sed 's/:$//')
 
-# Install basic build tools
-echo "=> Installing basic tools..."
-sudo apt update
-sudo apt install -y git python3-rosdep python3-colcon-common-extensions python3-vcstool
+WORKSPACE_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# Initialize rosdep
-if [ ! -f /etc/ros/rosdep/sources.list.d/20-default.list ]; then
-    echo "=> Initializing rosdep..."
-    sudo rosdep init
+if [ "$1" = "clean" ]; then
+    echo "=> Cleaning build artifacts..."
+    rm -rf "$WORKSPACE_DIR/build" "$WORKSPACE_DIR/install" "$WORKSPACE_DIR/log"
 fi
-echo "=> Updating rosdep..."
-rosdep update
 
-# Ignore realsense plugin to avoid extra heavy dependencies if not needed
-touch src/xarm_ros2/thirdparty/realsense_gazebo_plugin/COLCON_IGNORE || true
-
-# Install ROS 2 dependencies
-echo "=> Installing ROS 2 dependencies (this may ask for your password)..."
-rosdep install --from-paths src --ignore-src --rosdistro humble -y
-
-# Build the workspace
-echo "=> Building the workspace..."
 source /opt/ros/humble/setup.bash
-# We use CMake Policy 3.5 to bypass a known bug with jsoncpp on Ubuntu 22.04
-colcon build --cmake-args -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
-echo "================================================="
-echo " Setup complete! "
-echo " Run ./launch_simulation.sh to start the robot."
-echo "================================================="
+echo "=> Building with colcon..."
+cd "$WORKSPACE_DIR"
+colcon build \
+    --cmake-args -DCMAKE_BUILD_TYPE=Release \
+                 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+    --parallel-workers $(nproc)
+
+echo ""
+echo "═══════════════════════════════════════════════════"
+echo " Build complete!"
+echo ""
+echo " Quick start:"
+echo "   ./launch_dual_arm.sh sim     # Both arms in simulation"
+echo "   ./launch_dual_arm.sh real    # Both arms with hardware"
+echo "   ./launch_xarm_sim.sh         # xArm 7 only (sim)"
+echo "   ./launch_hitbot_sim.sh       # HITBOT only (sim)"
+echo "═══════════════════════════════════════════════════"

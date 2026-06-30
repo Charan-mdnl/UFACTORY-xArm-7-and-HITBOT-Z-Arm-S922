@@ -1,0 +1,271 @@
+<robot name="HITBOT">
+
+    <!-- Anchor link to world to prevent arm from falling -->
+    <link name="world"/>
+    <joint name="world_joint" type="fixed">
+        <parent link="world" />
+        <child link="S922_1" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </joint>
+
+    <link name="S922_1">
+        <inertial>
+            <origin xyz="-0.00031896 0.04246343 0.00029674" rpy="0.0 0.0 0.0" />
+            <mass value="4.705646" />
+            <inertia ixx="0.008965" iyy="0.013144" izz="0.008962" ixy="-0.000056" iyz="0.000052" ixz="-0.000045" />
+        </inertial>
+        <visual name="S922_1_visual">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="S922_1_collision">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="S922_2">
+        <inertial>
+            <origin xyz="-0.00000032 -0.00409121 0.07230568" rpy="0.0 0.0 0.0" />
+            <mass value="12.729169" />
+            <inertia ixx="0.032499" iyy="0.031555" izz="0.023788" ixy="-0.00000002" iyz="0.00029660" ixz="0.00000031" />
+        </inertial>
+        <visual name="S922_2_visual">
+            <origin xyz="0.0 0.0 -0.074" rpy="1.5707963267948966 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-2.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="S922_2_collision">
+            <origin xyz="0.0 0.0 -0.074" rpy="1.5707963267948966 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-2.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="S922_3">
+        <inertial>
+            <origin xyz="-0.00000004 0.21250020 0.07454833" rpy="0.0 0.0 0.0" />
+            <mass value="42.003389" />
+            <inertia ixx="1.323848" iyy="0.082405" izz="1.306099" ixy="0.00000022" iyz="0.00000001" ixz="-0.00000011" />
+        </inertial>
+        <visual name="S922_3_visual">
+            <origin xyz="-0.152 0.0 -0.06" rpy="0.0 0.0 -1.5707963267948903" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-3.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="S922_3_collision">
+            <origin xyz="-0.152 0.0 -0.06" rpy="0.0 0.0 -1.5707963267948903" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-3.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="S922_4">
+        <inertial>
+            <origin xyz="-0.18891210 0.0 0.05460834" rpy="0.0 0.0 0.0" />
+            <mass value="22.416777" />
+            <inertia ixx="0.025305" iyy="0.502160" izz="0.498261" ixy="-0.00000007" iyz="0.0" ixz="0.022051" />
+        </inertial>
+        <visual name="S922_4_visual">
+            <origin xyz="0.42500003 0.152 0.06100001" rpy="3.141592653589793 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-4.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="S922_4_collision">
+            <origin xyz="0.42500003 0.152 0.06100001" rpy="3.141592653589793 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-4.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="S922_5">
+        <inertial>
+            <origin xyz="-0.00254890 0.00013287 0.04396255" rpy="0.0 0.0 0.0" />
+            <mass value="4.835242" />
+            <inertia ixx="0.004563" iyy="0.006790" izz="0.006292" ixy="-0.00000002" iyz="-0.000000005" ixz="0.00006271" />
+        </inertial>
+        <visual name="S922_5_visual">
+            <origin xyz="-0.15186732 -0.81987736 -0.05320002" rpy="0.0 0.0 -1.570796326794897" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-5.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="S922_5_collision">
+            <origin xyz="-0.15186732 -0.81987736 -0.05320002" rpy="0.0 0.0 -1.570796326794897" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-5.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="S922_6">
+        <inertial>
+            <origin xyz="0.04134111 0.00275669 0.00000058" rpy="0.0 0.0 0.0" />
+            <mass value="4.703461" />
+            <inertia ixx="0.006198" iyy="0.004277" izz="0.006503" ixy="-0.000047" iyz="0.00000012" ixz="0.00000001" />
+        </inertial>
+        <visual name="S922_6_visual">
+            <origin xyz="0.095 -0.10200002 -0.82001003" rpy="-1.5707963267276066 1.5707963267948963 0.0" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-6.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="S922_6_collision">
+            <origin xyz="0.095 -0.10200002 -0.82001003" rpy="-1.5707963267276066 1.5707963267948963 0.0" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-6.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="S922_7">
+        <inertial>
+            <origin xyz="-0.00007587 0.00002409 0.01912195" rpy="0.0 0.0 0.0" />
+            <mass value="1.527602" />
+            <inertia ixx="0.000807" iyy="0.000808" izz="0.001210" ixy="0.00000150" iyz="-0.00000074" ixz="-0.00000004" />
+        </inertial>
+        <visual name="S922_7_visual">
+            <origin xyz="0.0 0.0 -0.0038" rpy="1.5707963269294802 0.0 -1.5707963267948972" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-7.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision name="S922_7_collision">
+            <origin xyz="0.0 0.0 -0.0038" rpy="1.5707963269294802 0.0 -1.5707963267948972" />
+            <geometry>
+                <mesh filename="package://hitbot_description/meshes/S922-7.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- Joints -->
+    <joint name="joint_1" type="revolute">
+        <origin xyz="0.0 0.075 0.0" rpy="-1.5707963267948966 0.0 0.0" />
+        <parent link="S922_1" />
+        <child link="S922_2" />
+        <axis xyz="0.0 0.0 1.0" />
+        <limit lower="-3.0543" upper="3.0543" effort="50.0" velocity="3.14" />
+        <dynamics damping="1.0" friction="1.0"/>
+    </joint>
+
+    <joint name="joint_2" type="revolute">
+        <origin xyz="0.0 -0.06100001 0.07799999" rpy="1.5707963267948966 0.0 0.0" />
+        <parent link="S922_2" />
+        <child link="S922_3" />
+        <axis xyz="0.0 0.0 1.0" />
+        <limit lower="-4.6251" upper="1.4835" effort="50.0" velocity="3.14" />
+        <dynamics damping="1.0" friction="1.0"/>
+    </joint>
+
+    <joint name="joint_3" type="revolute">
+        <origin xyz="0.0 0.42500003 0.0" rpy="3.141592653589793 0.0 3.141592653589793" />
+        <parent link="S922_3" />
+        <child link="S922_4" />
+        <axis xyz="0.0 0.0 1.0" />
+        <limit lower="-2.7925" upper="2.7925" effort="50.0" velocity="3.14" />
+        <dynamics damping="1.0" friction="1.0"/>
+    </joint>
+
+    <joint name="joint_4" type="revolute">
+        <origin xyz="-0.39501 0.0 0.00279999" rpy="3.141592653589793 0.0 0.0" />
+        <parent link="S922_4" />
+        <child link="S922_5" />
+        <axis xyz="0.0 0.0 1.0" />
+        <limit lower="-4.6251" upper="1.4835" effort="50.0" velocity="3.14" />
+        <dynamics damping="1.0" friction="1.0"/>
+    </joint>
+
+    <joint name="joint_5" type="revolute">
+        <origin xyz="-0.05806732 0.00013267 0.0488" rpy="1.5707963267948963 0.0 3.141592653589793" />
+        <parent link="S922_5" />
+        <child link="S922_6" />
+        <axis xyz="1.0 0.0 0.0" />
+        <limit lower="-3.0543" upper="3.0543" effort="50.0" velocity="3.14" />
+        <dynamics damping="1.0" friction="1.0"/>
+    </joint>
+
+    <joint name="joint_6" type="revolute">
+        <origin xyz="0.045 0.0582 0.0" rpy="1.5707963267948968 0.0 -3.1415926535225007" />
+        <parent link="S922_6" />
+        <child link="S922_7" />
+        <axis xyz="0.0 0.0 1.0" />
+        <limit lower="-3.0543" upper="3.0543" effort="50.0" velocity="3.14" />
+        <dynamics damping="1.0" friction="1.0"/>
+    </joint>
+
+    <!-- ============================================================= -->
+    <!-- ROS 2 Control — REAL HARDWARE (HITBOT TCP driver)              -->
+    <!-- ============================================================= -->
+    <ros2_control name="HitbotSystem" type="system">
+        <hardware>
+            <plugin>hitbot_hardware/HitbotHardwareInterface</plugin>
+            <param name="robot_ip">192.168.58.2</param>
+            <param name="robot_port">8080</param>
+        </hardware>
+        <joint name="joint_1">
+            <command_interface name="position">
+                <param name="min">-3.0543</param>
+                <param name="max">3.0543</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="joint_2">
+            <command_interface name="position">
+                <param name="min">-4.6251</param>
+                <param name="max">1.4835</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="joint_3">
+            <command_interface name="position">
+                <param name="min">-2.7925</param>
+                <param name="max">2.7925</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="joint_4">
+            <command_interface name="position">
+                <param name="min">-4.6251</param>
+                <param name="max">1.4835</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="joint_5">
+            <command_interface name="position">
+                <param name="min">-3.0543</param>
+                <param name="max">3.0543</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="joint_6">
+            <command_interface name="position">
+                <param name="min">-3.0543</param>
+                <param name="max">3.0543</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+    </ros2_control>
+
+</robot>

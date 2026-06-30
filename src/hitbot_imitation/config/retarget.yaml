@@ -1,0 +1,32 @@
+# Default retargeting parameters for the HITBOT Z-Arm S922.
+# Consumed by scripts/retarget.py (flags override these) and documented here as
+# the single place to tune the human->arm mapping.
+
+control_rate: 50.0          # Hz, output trajectory rate (paper commands at 50 Hz)
+ee_link: S922_7             # tool flange the EE poses command
+base_frame: world           # frame EE poses are expressed in
+
+# Object vs wrist tracking during a grasp:
+#   true  -> reproduce the object's path exactly while held (best for
+#            pour/stir/place); approach/retreat still follow the wrist.
+#   false -> track the human wrist throughout.
+object_anchored_grasp: true
+
+smooth_window: 7            # moving-average window (frames) on EE translation
+min_grasp_len: 2           # discard contact blips shorter than this (frames)
+gripper_lead: 2            # start closing the gripper this many frames early
+
+# Where, in the robot base frame, to place the START of the motion, plus a
+# yaw and a uniform scale on the motion (paper's manual workspace alignment).
+workspace:
+  anchor_xyz: [0.35, 0.0, 0.30]
+  anchor_yaw: 0.0
+  scale: 1.0               # <1 shrinks a large human motion into the arm's reach
+  max_reach: 0.92          # coarse S922 reach envelope (m) for the sanity check
+
+# Hand-frame -> tool-flange mounting offset (4x4, row-major). Identity treats
+# the reconstructed wrist frame as the tool flange.
+hand_to_ee: [1, 0, 0, 0,
+             0, 1, 0, 0,
+             0, 0, 1, 0,
+             0, 0, 0, 1]

@@ -1,0 +1,11 @@
+<library path="hitbot_hardware_interface">
+  <class
+    name="hitbot_hardware/HitbotHardwareInterface"
+    type="hitbot_hardware::HitbotHardwareInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ROS 2 Control hardware interface for the HITBOT Z-Arm S922.
+      Communicates over TCP sockets using the HITBOT controller protocol.
+    </description>
+  </class>
+</library>

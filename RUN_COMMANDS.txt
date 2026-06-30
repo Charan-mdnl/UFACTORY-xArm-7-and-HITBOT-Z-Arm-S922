@@ -1,50 +1,63 @@
-======================================================
-  QUICK RUN CHEAT SHEET - UFACTORY xArm 7
-======================================================
+# ═══════════════════════════════════════════════════════════════════
+# Dual-Arm Workspace: xArm 7 + HITBOT Z-Arm S922
+# ═══════════════════════════════════════════════════════════════════
 
-Whenever you open this folder, use these exact commands.
+## Quick Start
 
-------------------------------------------------------
-🤖 OPTION A: RUNNING THE PHYSICAL ROBOT
-------------------------------------------------------
-STEP 1: Hardware & Network Check
-- Battery plugged into green block (V+ and GND)
-- Ethernet cable connected (Laptop <--> Controller Box)
-- Release E-Stop (Red button popped up)
-- Your laptop IP must be set to 192.168.1.100
+  # 1. Build the workspace
+  ./setup.sh
 
-STEP 2: Enable Robot (UFACTORY Studio)
-- Open browser and go to: http://192.168.1.230:18333
-- Click "Enable Robot"
+  # 2. Launch both arms in simulation
+  ./launch_dual_arm.sh sim
 
-STEP 3: Launch ROS 2 MoveIt
-- Open terminal and run:
-  cd ~/xarm7_moveit_repo
-  ./launch_real_robot.sh
+  # 3. Launch both arms with real hardware
+  ./launch_dual_arm.sh real
 
-STEP 4: Move the Robot (In RViz)
-- MotionPlanning panel -> "Planning" tab
-- Set Velocity & Acceleration Scaling to 0.1 (10% speed)
-- Drag the ball marker
-- Click "Plan" -> verify visually -> Click "Execute"
+## Individual Robot Launch
 
-------------------------------------------------------
-🎮 OPTION B: RUNNING THE GAZEBO SIMULATION
-------------------------------------------------------
-If you just want to test code without the real robot:
+  # xArm 7 only (simulation)
+  ./launch_xarm_sim.sh
 
-STEP 1: Launch Simulation
-- Open terminal and run:
-  cd ~/xarm7_moveit_repo
-  ./launch_simulation.sh
+  # xArm 7 only (real hardware, IP: 192.168.1.230)
+  ./launch_xarm_real.sh
 
-STEP 2: Move the Virtual Robot (In RViz)
-- MotionPlanning panel -> "Planning" tab
-- Drag the ball marker
-- Click "Plan" -> Click "Execute" (Gazebo robot will move)
+  # HITBOT S922 only (simulation)
+  ./launch_hitbot_sim.sh
 
-------------------------------------------------------
-🚨 EMERGENCY STOP
-------------------------------------------------------
-- Physical: Smash the red E-Stop button on the base!
-- Software: Press Ctrl+C in your terminal.
+  # HITBOT S922 only (real hardware, IP: 192.168.58.2)
+  ./launch_hitbot_real.sh
+
+## Using MoveIt in RViz (after launching)
+
+  In RViz's MotionPlanning panel:
+  - "Planning Group" dropdown → select "xarm7" or "hitbot_arm"
+  - Drag the interactive marker to set a target pose
+  - Click "Plan" then "Execute"
+  - Switch planning group to control the other arm
+
+## Workspace Structure
+
+  src/
+  ├── xarm_ros2/            # UFACTORY xArm 7 packages
+  ├── hitbot_description/    # HITBOT URDF + STL meshes
+  ├── hitbot_moveit_config/  # HITBOT MoveIt configs
+  ├── hitbot_hardware/       # HITBOT ros2_control driver (TCP)
+  └── dual_arm_config/       # ★ Combined dual-arm package
+      ├── urdf/dual_arm.urdf.xacro    # Both robots in one URDF
+      ├── config/                      # MoveIt + controller configs
+      ├── launch/                      # sim & real launch files
+      └── rviz/                        # RViz config
+
+## Network Requirements (for real hardware)
+
+  xArm 7:  PC must have IP on 192.168.1.x subnet (e.g. 192.168.1.10)
+  HITBOT:  PC must have IP on 192.168.58.x subnet (e.g. 192.168.58.100)
+
+  Both can be on the same NIC using:
+    sudo ip addr add 192.168.1.10/24 dev enp1s0
+    sudo ip addr add 192.168.58.100/24 dev enp1s0
+
+## Rebuild After Changes
+
+  ./setup.sh          # incremental rebuild
+  ./setup.sh clean    # full clean rebuild

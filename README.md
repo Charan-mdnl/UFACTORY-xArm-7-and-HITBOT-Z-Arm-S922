@@ -1,99 +1,97 @@
-# UFACTORY xArm 7 Simulation & Real Robot Control
+# UFACTORY xArm 7 & HITBOT Z-Arm S922 Unified ROS 2 Workspace
 
-A fully self-contained ROS 2 Humble workspace for controlling the UFACTORY xArm 7 robotic arm in both Gazebo simulation and real-world hardware. This repository solves common environment conflicts, Gazebo loading issues, and provides easy-to-use launch scripts.
+A unified, self-contained ROS 2 Humble workspace for controlling both the **UFACTORY xArm 7** (7 DoF) and the **HITBOT Z-Arm S922** (6 DoF) robotic arms simultaneously in simulation (using mock hardware) and real-world hardware.
 
 ## 🚀 Features
+- **Dual-Arm Control**: Control both arms independently or simultaneously from a single MoveIt 2 instance.
+- **Upright SCARA Mount**: Fixed visual/collision orientation of the HITBOT Z-Arm (rotated 90° on the X-axis) so that it stands vertically next to the xArm 7 instead of lying flat.
+- **Domain Isolation**: Uses `ROS_DOMAIN_ID=42` to isolate your workspace and prevent conflicts with other robots on the network.
+- **Conda Conflict Free**: Automatically strips Anaconda/Miniforge libraries from active paths to prevent conflicts with ROS 2 and Gazebo.
+- **Clean Configuration**: Removed fixed links from active planning groups and formatted OMPL request adapters correctly as a space-separated string to ensure crash-free execution.
 
-*   **Dual Mode:** Dedicated scripts for both Gazebo Simulation (`launch_simulation.sh`) and Real Hardware Control (`launch_real_robot.sh`).
-*   **ROS 2 Isolation:** Automatically configures `ROS_DOMAIN_ID=42` to prevent interference from other ROS 2 projects (e.g., Humanoid/Panda robots) running on the same network.
-*   **Gazebo Fixes:** Explicitly sets `GAZEBO_MODEL_PATH` to prevent Gazebo from hanging on online database downloads.
-*   **Conda Compatibility:** Automatically strips Anaconda/Miniforge libraries from the path during execution to prevent `libssl`/`libcurl` conflicts with Gazebo's `spawn_entity`.
-*   **MoveIt Integration:** Pre-configured with RViz markers and MoveIt 2 Motion Planning capabilities.
+---
+
+## 📂 Repository Structure
+```
+.
+├── setup.sh                 # Cleans and builds the workspace
+├── launch_dual_arm.sh       # Usage: ./launch_dual_arm.sh [sim|real]
+├── launch_xarm_sim.sh       # xArm 7 simulation only
+├── launch_xarm_real.sh      # xArm 7 real hardware (IP: 192.168.1.230)
+├── launch_hitbot_sim.sh     # HITBOT simulation only
+├── launch_hitbot_real.sh    # HITBOT real hardware (IP: 192.168.58.2)
+├── RUN_COMMANDS.txt         # Quick start cheat sheet
+└── src/
+    ├── xarm_ros2/           # xArm 7 ROS 2 core packages
+    ├── hitbot_description/  # HITBOT URDF meshes and geometry
+    ├── hitbot_moveit_config/ # HITBOT MoveIt configs
+    ├── hitbot_hardware/     # HITBOT TCP driver and hardware interface
+    ├── hitbot_imitation/    # HITBOT imitation learning package
+    ├── hitbot-api/          # Standalone python API wrapper
+    ├── cwsfa_hitbot_api/    # Alternative Python API wrapper
+    └── dual_arm_config/     # Unified MoveIt 2 integration package
+```
 
 ---
 
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
-*   Ubuntu 22.04
-*   ROS 2 Humble
-*   Git
+- Ubuntu 22.04 LTS
+- ROS 2 Humble Hawksbill
+- MoveIt 2 for ROS 2 Humble
 
-### Clone & Build
-Clone the repository and run the setup script to install all dependencies and build the workspace:
-
+### 1. Build the Workspace
+Clone and run the compilation script:
 ```bash
-git clone https://github.com/Charan-mdnl/UFACTORY-xArm-7-WITH-MOVE-IT.git ~/xarm7_moveit_repo
-cd ~/xarm7_moveit_repo
-chmod +x setup.sh
-./setup.sh
+git clone https://github.com/Charan-mdnl/UFACTORY-xArm-7-and-HITBOT-Z-Arm-S922.git ~/dual_arm_ws
+cd ~/dual_arm_ws
+./setup.sh clean
 ```
 
 ---
 
-## 💻 Running the Gazebo Simulation
-
-If you want to test trajectories without the physical robot:
-
+## 💻 Running the Simulation
+To run both arms in simulation (fake hardware / mock_components):
 ```bash
-cd ~/xarm7_moveit_repo
-./launch_simulation.sh
+./launch_dual_arm.sh sim
 ```
-
-**What this script does:**
-1. Isolates the ROS 2 network.
-2. Strips Conda environments from the library path.
-3. Points Gazebo to local offline models.
-4. Launches Gazebo with the xArm 7 beside a table.
-5. Launches RViz with the MoveIt interactive markers enabled.
+This will launch:
+1. `ros2_control_node` with simulated hardware interfaces.
+2. `robot_state_publisher` publishing the integrated URDF.
+3. MoveIt 2 `move_group` server.
+4. RViz with the interactive markers loaded.
 
 ---
 
-## 🤖 Running the Physical Robot
+## 🤖 Controlling Real Hardware
 
-### 1. Hardware Connection
-1. Connect the **50V 50A Battery** to the `V+` and `GND` pins on the green terminal block of the DC1300 Controller Box.
-2. Connect the **Ethernet Cable** from the DC1300 LAN port directly to your laptop.
-3. **Important:** Release the physical E-Stop button on the robot's base.
-
-### 2. Network Configuration
-The xArm controller has a default static IP of `192.168.1.230`. You must put your laptop on the same subnet:
+### 1. Subnet Setup
+Both robots operate on different subnets. Your control PC must be connected to both. You can assign two IP addresses to the same Ethernet interface (e.g., `enp1s0`):
 ```bash
-# Example command (replace enp1s0 with your ethernet interface)
+# Add IP for xArm 7 subnet (default IP: 192.168.1.230)
 sudo ip addr add 192.168.1.100/24 dev enp1s0
-sudo ip link set enp1s0 up
+
+# Add IP for HITBOT subnet (default IP: 192.168.58.2)
+sudo ip addr add 192.168.58.100/24 dev enp1s0
+
+# Verify connections
+ping 192.168.1.230
+ping 192.168.58.2
 ```
-Verify the connection by running: `ping 192.168.1.230`
 
-### 3. Enable the Robot
-1. Open your browser and navigate to UFACTORY Studio: `http://192.168.1.230:18333`
-2. Ensure there are no error codes.
-3. Click **Enable Robot**.
-
-### 4. Launch MoveIt Control
-Once the robot is enabled, run the real-robot script:
+### 2. Launch the Hardware Nodes
+To connect and control the real hardware controllers:
 ```bash
-cd ~/xarm7_moveit_repo
-./launch_real_robot.sh
+./launch_dual_arm.sh real
 ```
-
-### 5. Moving the Robot
-1. When RViz opens, look at the **MotionPlanning** panel on the bottom left.
-2. Under the **Planning** tab, set **Velocity Scaling** and **Acceleration Scaling** to **`0.1`** (10% speed) for safety.
-3. Check the `Query Goal State` and `Query Start State` boxes.
-4. Drag the interactive marker ball at the end of the robot arm to your desired position.
-5. Click **Plan** to preview the trajectory.
-6. Keep your hand near the E-Stop button and click **Execute**.
 
 ---
 
-## 🐛 Troubleshooting
-
-*   **MoveIt crashes on startup with "Joint not found" errors:** 
-    You have another ROS 2 project running in the background. The `launch_*.sh` scripts use `ROS_DOMAIN_ID=42` to isolate the network. Do not manually launch the python files without setting the domain ID.
-*   **Gazebo gets stuck on "Connecting to model database":**
-    Gazebo is trying to download models from the internet. Run `./launch_simulation.sh` as it forces Gazebo to use the local offline model path.
-*   **RViz interactive markers are missing:**
-    The default UFACTORY config hides them. We have modified `planner.rviz` to set `Interactive Marker Size: 0.2` and enable the query states by default.
-*   **Script gives "Permission Denied":**
-    Run `chmod +x launch_simulation.sh launch_real_robot.sh`
+## 🎮 Moving the Robots in RViz
+1. In the bottom-left **MotionPlanning** panel of RViz, click the **Planning** tab.
+2. Under **Planning Group**:
+   - Select `xarm7` to control the xArm 7 (DoF: 7).
+   - Select `hitbot_arm` to control the HITBOT Z-Arm S922 (DoF: 6).
+3. Drag the interactive marker ball at the tool tip to set the target pose.
+4. Click **Plan** to visualize, then **Execute** to move.

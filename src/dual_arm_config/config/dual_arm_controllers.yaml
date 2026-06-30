@@ -1,0 +1,43 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 50  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    xarm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    hitbot_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+xarm_controller:
+  ros__parameters:
+    joints:
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
+      - joint7
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+hitbot_controller:
+  ros__parameters:
+    joints:
+      - hitbot_joint1
+      - hitbot_joint2
+      - hitbot_joint3
+      - hitbot_joint4
+      - hitbot_joint5
+      - hitbot_joint6
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
