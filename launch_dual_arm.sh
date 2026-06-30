@@ -21,6 +21,10 @@ export PYTHONPATH=$(echo "$PYTHONPATH" | tr ':' '\n' | grep -v "miniforge\|anaco
 
 export ROS_DOMAIN_ID=42
 
+# Fix RViz crash on Intel HD 4400 (Lenovo Z50-70)
+export LIBGL_ALWAYS_SOFTWARE=1
+export MESA_GL_VERSION_OVERRIDE=3.3
+
 # Kill leftover processes
 echo "=> Cleaning up stale processes..."
 killall -9 gzserver gzclient rviz2 move_group ros2_control_node robot_state_publisher 2>/dev/null

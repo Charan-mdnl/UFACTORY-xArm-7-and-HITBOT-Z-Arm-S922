@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bashc
 # Launch only the HITBOT Z-Arm S922 with REAL hardware
 echo "═══════════════════════════════════════════════════"
 echo " HITBOT Z-Arm S922 — Real Hardware Mode"
@@ -8,6 +8,10 @@ export LD_LIBRARY_PATH=$(echo "$LD_LIBRARY_PATH" | tr ':' '\n' | grep -v "minifo
 export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v "miniforge\|anaconda\|conda\|miniconda" | tr '\n' ':' | sed 's/:$//')
 export PYTHONPATH=$(echo "$PYTHONPATH" | tr ':' '\n' | grep -v "miniforge\|anaconda\|conda\|miniconda" | tr '\n' ':' | sed 's/:$//')
 export ROS_DOMAIN_ID=42
+
+# Fix RViz crash on Intel HD 4400 (Lenovo Z50-70)
+export LIBGL_ALWAYS_SOFTWARE=1
+export MESA_GL_VERSION_OVERRIDE=3.3
 
 killall -9 rviz2 move_group ros2_control_node 2>/dev/null
 sleep 1

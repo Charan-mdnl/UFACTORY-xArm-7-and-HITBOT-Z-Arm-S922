@@ -9,6 +9,10 @@ export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v "miniforge\|anaconda\|conda\|
 export PYTHONPATH=$(echo "$PYTHONPATH" | tr ':' '\n' | grep -v "miniforge\|anaconda\|conda\|miniconda" | tr '\n' ':' | sed 's/:$//')
 export ROS_DOMAIN_ID=42
 
+# Fix RViz crash on Intel HD 4400 (Lenovo Z50-70)
+export LIBGL_ALWAYS_SOFTWARE=1
+export MESA_GL_VERSION_OVERRIDE=3.3
+
 killall -9 gzserver gzclient rviz2 move_group 2>/dev/null
 sleep 1
 
@@ -18,4 +22,4 @@ WORKSPACE_DIR="$(cd "$(dirname "$0")" && pwd)"
 source /opt/ros/humble/setup.bash
 source "$WORKSPACE_DIR/install/setup.bash"
 
-ros2 launch xarm_planner xarm7_planner_fake.launch.py
+ros2 launch xarm_planner xarm7_planner_gazebo.launch.py add_gripper:=false
